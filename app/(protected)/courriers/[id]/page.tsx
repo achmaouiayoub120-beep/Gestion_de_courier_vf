@@ -16,21 +16,18 @@ export default function CourrierDetailPage() {
   const id = params.id as string
   const [courrier, setCourrier] = useState<Courier | null>(null)
   const [entities, setEntities] = useState<Entity[]>([])
-  const [users, setUsers] = useState<User[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [isUpdating, setIsUpdating] = useState(false)
 
   const loadData = useCallback(async () => {
     setIsLoading(true)
     try {
-      const [courrierRes, entitiesRes, usersRes] = await Promise.all([
+      const [courrierRes, entitiesRes] = await Promise.all([
         api.getCourierById(id),
-        api.getEntities(),
-        api.getUsers()
+        api.getEntities()
       ])
       setCourrier(courrierRes)
       setEntities(entitiesRes)
-      setUsers(usersRes)
     } catch (error) {
       console.error("Erreur chargement détails courrier:", error)
     } finally {
@@ -186,7 +183,7 @@ export default function CourrierDetailPage() {
                       <div className="flex-1">
                         <p className="text-xs text-muted-foreground">{new Date(entry.changedAt).toLocaleString()}</p>
                         {entry.notes && <p className="text-sm mt-1">{entry.notes}</p>}
-                        <p className="text-xs text-muted-foreground italic">Par: {typeof entry.changedBy === "object" ? (entry.changedBy as any)?.name : users.find(u => u.id === entry.changedBy)?.name || entry.changedBy}</p>
+                        <p className="text-xs text-muted-foreground italic">Par: {typeof entry.changedBy === "object" ? (entry.changedBy as any)?.name : entry.changedBy}</p>
                       </div>
                     </div>
                   ))
@@ -241,7 +238,7 @@ export default function CourrierDetailPage() {
             <CardContent className="space-y-3 text-sm">
               <div>
                 <label className="text-xs font-semibold text-muted-foreground">Créé par</label>
-                <p>{typeof courrier.createdBy === "object" ? (courrier.createdBy as any)?.name : users.find((u) => u.id === courrier.createdBy)?.name || "Inconnu"}</p>
+                <p>{typeof courrier.createdBy === "object" ? (courrier.createdBy as any)?.name : courrier.createdBy}</p>
               </div>
               <div>
                 <label className="text-xs font-semibold text-muted-foreground">Date de création</label>
