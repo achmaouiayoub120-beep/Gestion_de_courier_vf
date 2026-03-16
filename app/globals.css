@@ -4,93 +4,92 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* ESTSB Brand Colors - inspired by logo */
-  /* Green: #16A34A, Red/Burgundy: #991B1B, Blue: #1E40AF, Neutral: #F3F4F6 */
-  --background: hsl(0 0% 100%);
-  --foreground: hsl(222.2 84% 4.9%);
+  /* ─── Premium EST SB Design System ─── */
+  --background: hsl(220 20% 97%);
+  --foreground: hsl(224 71% 4%);
   --card: hsl(0 0% 100%);
-  --card-foreground: oklch(0.145 0 0);
+  --card-foreground: hsl(224 71% 4%);
   --popover: hsl(0 0% 100%);
-  --popover-foreground: oklch(0.145 0 0);
+  --popover-foreground: hsl(224 71% 4%);
 
-  /* Primary: EST SB Green */
-  --primary: hsl(221.2 83.2% 53.3%);
-  --primary-foreground: oklch(1 0 0);
+  /* Primary: EST SB Emerald Green */
+  --primary: hsl(152 60% 38%);
+  --primary-foreground: hsl(0 0% 100%);
 
   /* Secondary: EST SB Blue */
-  --secondary: hsl(210 40% 96%);
-  --secondary-foreground: oklch(1 0 0);
+  --secondary: hsl(217 91% 60%);
+  --secondary-foreground: hsl(0 0% 100%);
 
-  /* Accent: Subtle Primary */
-  --accent: hsl(221.2 83.2% 53.3% / 0.1);
-  --accent-foreground: hsl(221.2 83.2% 53.3%);
+  /* Accent */
+  --accent: hsl(220 14% 96%);
+  --accent-foreground: hsl(224 71% 4%);
 
-  --muted: hsl(210 40% 96%);
-  --muted-foreground: oklch(0.5 0 0);
-  --destructive: hsl(0 84.2% 60.2%);
-  --destructive-foreground: oklch(1 0 0);
-  --border: hsl(214.3 31.8% 91.4%);
-  --input: hsl(214.3 31.8% 91.4%);
-  --ring: hsl(221.2 83.2% 53.3%);
+  --muted: hsl(220 14% 96%);
+  --muted-foreground: hsl(220 9% 46%);
+  --destructive: hsl(0 84% 60%);
+  --destructive-foreground: hsl(0 0% 100%);
+  --border: hsl(220 13% 91%);
+  --input: hsl(220 13% 91%);
+  --ring: hsl(152 60% 38%);
 
   /* Chart colors */
-  --chart-1: hsl(221.2 83.2% 53.3%);
-  --chart-2: hsl(212 95% 68%);
-  --chart-3: hsl(216 92% 60%);
-  --chart-4: hsl(210 98% 78%);
-  --chart-5: hsl(212 97% 87%);
+  --chart-1: hsl(152 60% 38%);
+  --chart-2: hsl(217 91% 60%);
+  --chart-3: hsl(262 83% 58%);
+  --chart-4: hsl(43 96% 56%);
+  --chart-5: hsl(0 84% 60%);
 
-  --radius: 0.625rem;
+  --radius: 0.75rem;
 
-  /* Sidebar colors */
-  --sidebar: hsl(0 0% 98%);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.55 0.193 142.495);
-  --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.4 0.193 254);
-  --sidebar-accent-foreground: oklch(1 0 0);
-  --sidebar-border: oklch(0.9 0 0);
-  --sidebar-ring: oklch(0.55 0.193 142.495);
+  /* Sidebar */
+  --sidebar: hsl(220 20% 98%);
+  --sidebar-foreground: hsl(224 71% 4%);
+  --sidebar-primary: hsl(152 60% 38%);
+  --sidebar-primary-foreground: hsl(0 0% 100%);
+  --sidebar-accent: hsl(220 14% 96%);
+  --sidebar-accent-foreground: hsl(224 71% 4%);
+  --sidebar-border: hsl(220 13% 91%);
+  --sidebar-ring: hsl(152 60% 38%);
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.98 0 0);
-  --card: oklch(0.2 0 0);
-  --card-foreground: oklch(0.98 0 0);
-  --popover: oklch(0.2 0 0);
-  --popover-foreground: oklch(0.98 0 0);
-  --primary: oklch(0.65 0.193 142.495);
-  --primary-foreground: oklch(0.145 0 0);
-  --secondary: oklch(0.55 0.193 254);
-  --secondary-foreground: oklch(0.98 0 0);
-  --accent: oklch(0.55 0.2 20);
-  --accent-foreground: oklch(0.98 0 0);
-  --muted: oklch(0.3 0 0);
-  --muted-foreground: oklch(0.65 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(1 0 0);
-  --border: oklch(0.3 0 0);
-  --input: oklch(0.25 0 0);
-  --ring: oklch(0.65 0.193 142.495);
-  --chart-1: oklch(0.65 0.193 142.495);
-  --chart-2: oklch(0.55 0.193 254);
-  --chart-3: oklch(0.55 0.2 20);
-  --chart-4: oklch(0.7 0.15 86);
-  --chart-5: oklch(0.65 0.15 180);
-  --sidebar: oklch(0.15 0 0);
-  --sidebar-foreground: oklch(0.98 0 0);
-  --sidebar-primary: oklch(0.65 0.193 142.495);
-  --sidebar-primary-foreground: oklch(0.15 0 0);
-  --sidebar-accent: oklch(0.55 0.193 254);
-  --sidebar-accent-foreground: oklch(0.98 0 0);
-  --sidebar-border: oklch(0.3 0 0);
-  --sidebar-ring: oklch(0.65 0.193 142.495);
+  --background: hsl(224 71% 4%);
+  --foreground: hsl(210 20% 98%);
+  --card: hsl(224 50% 8%);
+  --card-foreground: hsl(210 20% 98%);
+  --popover: hsl(224 50% 8%);
+  --popover-foreground: hsl(210 20% 98%);
+  --primary: hsl(152 60% 48%);
+  --primary-foreground: hsl(224 71% 4%);
+  --secondary: hsl(217 91% 60%);
+  --secondary-foreground: hsl(0 0% 100%);
+  --accent: hsl(224 50% 13%);
+  --accent-foreground: hsl(210 20% 98%);
+  --muted: hsl(224 50% 13%);
+  --muted-foreground: hsl(218 11% 60%);
+  --destructive: hsl(0 63% 31%);
+  --destructive-foreground: hsl(0 84% 60%);
+  --border: hsl(224 50% 15%);
+  --input: hsl(224 50% 15%);
+  --ring: hsl(152 60% 48%);
+  --chart-1: hsl(152 60% 48%);
+  --chart-2: hsl(217 91% 65%);
+  --chart-3: hsl(262 83% 65%);
+  --chart-4: hsl(43 96% 56%);
+  --chart-5: hsl(0 84% 60%);
+  --sidebar: hsl(224 50% 6%);
+  --sidebar-foreground: hsl(210 20% 98%);
+  --sidebar-primary: hsl(152 60% 48%);
+  --sidebar-primary-foreground: hsl(224 71% 4%);
+  --sidebar-accent: hsl(224 50% 13%);
+  --sidebar-accent-foreground: hsl(210 20% 98%);
+  --sidebar-border: hsl(224 50% 15%);
+  --sidebar-ring: hsl(152 60% 48%);
 }
 
 @theme inline {
-  --font-sans: "Geist", "Geist Fallback";
-  --font-mono: "Geist Mono", "Geist Mono Fallback";
+  --font-sans: "Inter", "Geist", "Geist Fallback", system-ui, sans-serif;
+  --font-mono: "Geist Mono", "Geist Mono Fallback", monospace;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -136,4 +135,61 @@
   body {
     @apply bg-background text-foreground;
   }
+  /* Smooth theme transitions */
+  html {
+    transition: color-scheme 0.3s;
+  }
+  html.dark {
+    color-scheme: dark;
+  }
+  body, .bg-background, .bg-card, .bg-sidebar, .bg-popover {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  }
+}
+
+/* ─── Premium Scrollbar ─── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(220 9% 46% / 0.3);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(220 9% 46% / 0.5);
+}
+
+/* ─── Mesh Gradient Animation for Login ─── */
+@keyframes mesh-gradient {
+  0%, 100% { background-position: 0% 50%; }
+  25% { background-position: 100% 0%; }
+  50% { background-position: 100% 100%; }
+  75% { background-position: 0% 100%; }
+}
+
+.mesh-gradient-bg {
+  background: linear-gradient(
+    -45deg,
+    hsl(224 71% 4%),
+    hsl(224 50% 10%),
+    hsl(152 60% 15%),
+    hsl(217 60% 12%),
+    hsl(224 71% 4%)
+  );
+  background-size: 400% 400%;
+  animation: mesh-gradient 20s ease infinite;
+}
+
+/* ─── Voice Button Pulse ─── */
+@keyframes voice-pulse {
+  0% { box-shadow: 0 0 0 0 hsl(152 60% 38% / 0.5); }
+  70% { box-shadow: 0 0 0 14px hsl(152 60% 38% / 0); }
+  100% { box-shadow: 0 0 0 0 hsl(152 60% 38% / 0); }
+}
+.voice-pulse {
+  animation: voice-pulse 1.5s infinite;
 }

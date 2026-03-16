@@ -14,7 +14,15 @@ async function request<T>(endpoint: string, options: RequestInit = {}): Promise<
     ...options.headers,
   };
 
-  const res = await fetch(`${API_URL}${endpoint}`, { ...options, headers });
+  let res: Response;
+  try {
+    res = await fetch(`${API_URL}${endpoint}`, { ...options, headers });
+  } catch (error: any) {
+    if (error.name === 'TypeError' && error.message.includes('fetch')) {
+      throw new Error('Impossible de se connecter au serveur. Vérifiez que le backend est démarré.');
+    }
+    throw error;
+  }
 
   if (!res.ok) {
     const err = await res.json().catch(() => ({ message: 'Erreur réseau' }));

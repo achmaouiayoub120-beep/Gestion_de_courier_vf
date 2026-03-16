@@ -1,27 +1,5 @@
 # Internal Mail Management
 
-*Automatically synced with your [v0.app](https://v0.app) deployments*
-
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/ayoub-s-projects-7b3db891/v0-internal-mail-management)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.app-black?style=for-the-badge)](https://v0.app/chat/pVHtU41tlZA)
-
-## Overview
-
-This repository will stay in sync with your deployed chats on [v0.app](https://v0.app).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.app](https://v0.app).
-
-## Deployment
-
-Your project is live at:
-
-**[https://vercel.com/ayoub-s-projects-7b3db891/v0-internal-mail-management](https://vercel.com/ayoub-s-projects-7b3db891/v0-internal-mail-management)**
-
-## Build your app
-
-Continue building your app on:
-
-**[https://v0.app/chat/pVHtU41tlZA](https://v0.app/chat/pVHtU41tlZA)**
-
 ## 📚 Documentation
 
 Detailed documentation about the project architecture can be found in the [docs](./docs) directory:
@@ -31,9 +9,54 @@ Detailed documentation about the project architecture can be found in the [docs]
 *   [**API Reference**](./docs/API_REFERENCE.md)
 *   [**UML Diagrams**](./UML-Diagrams.md)
 
-## How It Works
+## 🚀 Installation & Démarrage
 
-1. Create and modify your project using [v0.app](https://v0.app)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+Ce projet est structuré en deux parties : un backend NestJS et un frontend Next.js.
+Assurez-vous d'avoir Node.js, `pnpm` (recommandé) ou `npm`, et PostgreSQL installés sur votre machine.
+
+### 1. Configuration et Démarrage du Backend (API)
+Le backend utilise NestJS, Prisma et PostgreSQL.
+
+```bash
+# Se placer dans le dossier backend
+cd backend
+
+# Installer les dépendances
+pnpm install
+
+# Configurer la base de données
+# Vérifiez que votre PostgreSQL est lancé et que l'URL dans `.env` correspond.
+# Exemple dans .env : DATABASE_URL="postgresql://user:password@localhost:5432/estsb_mail?schema=public"
+
+# Pousser le schéma dans la base
+npx prisma db push
+
+# (Optionnel) Peupler la base avec des données de test
+npx prisma db seed
+
+# Lancer le serveur backend
+pnpm run start:dev
+```
+Le backend sera disponible sur `http://localhost:3001/api`.
+
+### 2. Configuration et Démarrage du Frontend (Interface)
+Le frontend utilise Next.js et Tailwind CSS (avec un thème premium EST SB).
+
+Dans un terminal séparé :
+```bash
+# Revenir à la racine du projet
+cd ..
+
+# Installer les dépendances
+pnpm install
+
+# Lancer le serveur de développement
+pnpm run dev
+```
+Le frontend sera disponible sur `http://localhost:3000`.
+
+### Comptes de test
+Si vous avez lancé le script de seed (`npx prisma db seed`), vous pouvez vous connecter avec :
+- **Admin**: `admin@estsb.edu` / `Password123!`
+- **Chef**: `chef.info@estsb.edu` / `Password123!`
+- **Agent**: `agent.mail@estsb.edu` / `Password123!`

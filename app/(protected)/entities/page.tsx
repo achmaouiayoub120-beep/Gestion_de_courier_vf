@@ -5,11 +5,23 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { api } from "@/lib/api"
 import type { Entity, User } from "@/lib/types"
-import { Plus, Edit2, Trash2, Loader2 } from "lucide-react"
+import { Plus, Edit2, Trash2, Loader2, Building2, Mail as MailIcon, Phone, Code2, Users } from "lucide-react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { PageTransition } from "@/components/page-transition"
+import { motion } from "framer-motion"
+import { toast } from "sonner"
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 8 },
+  show: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.05, duration: 0.3 },
+  }),
+}
 
 export default function EntitiesPage() {
   const [entities, setEntities] = useState<Entity[]>([])
@@ -38,6 +50,7 @@ export default function EntitiesPage() {
       setUsers(usersRes.filter(u => u.role === 'CHEF' || u.role === 'SUPER_ADMIN' || u.role === 'ADMIN'))
     } catch (error) {
       console.error("Erreur chargement entités:", error)
+      toast.error("Erreur lors du chargement des entités")
     } finally {
       setIsLoading(false)
     }
@@ -76,7 +89,7 @@ export default function EntitiesPage() {
 
   const handleSubmit = async () => {
     if (!formData.label) {
-      alert("Le libellé est obligatoire")
+      toast.error("Le libellé est obligatoire")
       return
     }
 
@@ -89,14 +102,16 @@ export default function EntitiesPage() {
 
       if (editingId) {
         await api.updateEntity(editingId, payload)
+        toast.success("Entité modifiée avec succès")
       } else {
         await api.createEntity(payload)
+        toast.success("Entité créée avec succès")
       }
-      
+
       loadData()
       setIsOpen(false)
     } catch (error: any) {
-      alert(error.message || "Erreur lors de l'enregistrement")
+      toast.error(error.message || "Erreur lors de l'enregistrement")
     }
   }
 
@@ -104,9 +119,10 @@ export default function EntitiesPage() {
     if (confirm("Êtes-vous sûr de vouloir supprimer cette entité ?")) {
       try {
         await api.deleteEntity(id)
+        toast.success("Entité supprimée avec succès")
         loadData()
       } catch (error: any) {
-        alert(error.message || "Erreur lors de la suppression")
+        toast.error(error.message || "Erreur lors de la suppression")
       }
     }
   }
@@ -117,146 +133,146 @@ export default function EntitiesPage() {
   }
 
   return (
-    <div className="space-y-6 p-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold">Entités Administratives</h1>
-          <p className="text-muted-foreground">Gérez les départements et services</p>
-        </div>
-        <Dialog open={isOpen} onOpenChange={setIsOpen}>
-          <DialogTrigger asChild>
-            <Button onClick={() => handleOpenDialog()} className="gap-2">
-              <Plus className="w-4 h-4" />
-              Nouvelle Entité
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>{editingId ? "Modifier" : "Créer"} une Entité</DialogTitle>
-            </DialogHeader>
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium mb-2">Libellé *</label>
-                <Input
-                  value={formData.label}
-                  onChange={(e) => setFormData({ ...formData, label: e.target.value })}
-                  placeholder="Ex: Informatique"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-2">Description</label>
-                <Textarea
-                  value={formData.description}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  placeholder="Description de l'entité"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-2">Entité Parente</label>
-                <Select
-                  value={formData.parentEntityId}
-                  onValueChange={(value) => setFormData({ ...formData, parentEntityId: value })}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Sélectionnez une entité parente" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="none">Aucune</SelectItem>
-                    {entities
-                      .filter((e) => e.id !== editingId)
-                      .map((entity) => (
-                        <SelectItem key={entity.id} value={entity.id}>
-                          {entity.label}
-                        </SelectItem>
-                      ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-2">Chef d'Entité</label>
-                <Select value={formData.chefId} onValueChange={(value) => setFormData({ ...formData, chefId: value })}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Sélectionnez un chef" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="none">Non assigné</SelectItem>
-                    {users.map((user) => (
-                      <SelectItem key={user.id} value={user.id}>
-                        {user.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium mb-2">Email</label>
-                  <Input
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2">Téléphone</label>
-                  <Input value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} />
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-2">Code Interne</label>
-                <Input
-                  value={formData.code}
-                  onChange={(e) => setFormData({ ...formData, code: e.target.value })}
-                  placeholder="Ex: INFO"
-                />
-              </div>
-              <Button onClick={handleSubmit} className="w-full">
-                {editingId ? "Modifier" : "Créer"}
+    <PageTransition>
+      <div className="space-y-5 p-4 md:p-6">
+        <div className="flex justify-between items-center">
+          <div>
+            <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Entités Administratives</h1>
+            <p className="text-muted-foreground text-sm mt-1">Gérez les départements et services</p>
+          </div>
+          <Dialog open={isOpen} onOpenChange={setIsOpen}>
+            <DialogTrigger asChild>
+              <Button onClick={() => handleOpenDialog()} className="gap-2 text-sm rounded-xl shadow-sm shadow-primary/20">
+                <Plus className="w-4 h-4" />
+                <span className="hidden sm:inline">Nouvelle Entité</span>
               </Button>
-            </div>
-          </DialogContent>
-        </Dialog>
-      </div>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Liste des Entités ({entities.length})</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {isLoading ? (
-            <div className="flex justify-center p-8">
-              <Loader2 className="w-8 h-8 animate-spin text-primary" />
-            </div>
-          ) : (
-            <div className="space-y-3">
-              {entities.map((entity) => (
-                <div key={entity.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted">
-                  <div className="flex-1">
-                    <h3 className="font-semibold">{entity.label}</h3>
-                    <p className="text-sm text-muted-foreground">{entity.description}</p>
-                    <div className="flex gap-4 text-xs text-muted-foreground mt-2">
-                      {entity.code && <span>Code: {entity.code}</span>}
-                      {entity.email && <span>Email: {entity.email}</span>}
-                      {entity.chefId && <span>Chef: {getChefName(entity.chefId)}</span>}
-                    </div>
+            </DialogTrigger>
+            <DialogContent className="rounded-2xl">
+              <DialogHeader>
+                <DialogTitle>{editingId ? "Modifier" : "Créer"} une Entité</DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4 mt-2">
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium text-foreground/80">Libellé *</label>
+                  <Input value={formData.label} onChange={(e) => setFormData({ ...formData, label: e.target.value })} placeholder="Ex: Informatique" className="h-10 rounded-xl" />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium text-foreground/80">Description</label>
+                  <Textarea value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} placeholder="Description de l'entité" className="rounded-xl resize-none" />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium text-foreground/80">Entité Parente</label>
+                  <Select value={formData.parentEntityId} onValueChange={(value) => setFormData({ ...formData, parentEntityId: value })}>
+                    <SelectTrigger className="h-10 rounded-xl"><SelectValue placeholder="Sélectionnez une entité parente" /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="none">Aucune</SelectItem>
+                      {entities.filter((e) => e.id !== editingId).map((entity) => (
+                        <SelectItem key={entity.id} value={entity.id}>{entity.label}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium text-foreground/80">Chef d'Entité</label>
+                  <Select value={formData.chefId} onValueChange={(value) => setFormData({ ...formData, chefId: value })}>
+                    <SelectTrigger className="h-10 rounded-xl"><SelectValue placeholder="Sélectionnez un chef" /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="none">Non assigné</SelectItem>
+                      {users.map((user) => (
+                        <SelectItem key={user.id} value={user.id}>{user.name}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="space-y-1.5">
+                    <label className="text-sm font-medium text-foreground/80">Email</label>
+                    <Input type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="h-10 rounded-xl" />
                   </div>
-                  <div className="flex gap-2">
-                    <Button variant="outline" size="sm" onClick={() => handleOpenDialog(entity)}>
-                      <Edit2 className="w-4 h-4" />
-                    </Button>
-                    <Button variant="outline" size="sm" onClick={() => handleDelete(entity.id)}>
-                      <Trash2 className="w-4 h-4 text-destructive" />
-                    </Button>
+                  <div className="space-y-1.5">
+                    <label className="text-sm font-medium text-foreground/80">Téléphone</label>
+                    <Input value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} className="h-10 rounded-xl" />
                   </div>
                 </div>
-              ))}
-              {entities.length === 0 && (
-                <p className="text-center text-muted-foreground py-8">Aucune entité trouvée</p>
-              )}
-            </div>
-          )}
-        </CardContent>
-      </Card>
-    </div>
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium text-foreground/80">Code Interne</label>
+                  <Input value={formData.code} onChange={(e) => setFormData({ ...formData, code: e.target.value })} placeholder="Ex: INFO" className="h-10 rounded-xl" />
+                </div>
+                <Button onClick={handleSubmit} className="w-full rounded-xl">{editingId ? "Modifier" : "Créer"}</Button>
+              </div>
+            </DialogContent>
+          </Dialog>
+        </div>
+
+        <Card className="border-border/60">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm font-semibold">Liste des Entités ({entities.length})</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {isLoading ? (
+              <div className="flex flex-col items-center justify-center py-12 gap-3">
+                <Loader2 className="w-7 h-7 animate-spin text-primary" />
+                <p className="text-sm text-muted-foreground">Chargement...</p>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {entities.map((entity, i) => (
+                  <motion.div
+                    key={entity.id}
+                    custom={i}
+                    variants={itemVariants}
+                    initial="hidden"
+                    animate="show"
+                    className="flex items-center justify-between p-4 rounded-xl border border-border/40 hover:bg-muted/50 hover:border-border transition-all group"
+                  >
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <Building2 className="w-4 h-4 text-primary flex-shrink-0" />
+                        <h3 className="font-semibold text-sm truncate">{entity.label}</h3>
+                      </div>
+                      {entity.description && (
+                        <p className="text-xs text-muted-foreground mt-1 pl-6 truncate">{entity.description}</p>
+                      )}
+                      <div className="flex flex-wrap gap-3 text-xs text-muted-foreground mt-2 pl-6">
+                        {entity.code && (
+                          <span className="flex items-center gap-1">
+                            <Code2 className="w-3 h-3" /> {entity.code}
+                          </span>
+                        )}
+                        {entity.email && (
+                          <span className="flex items-center gap-1">
+                            <MailIcon className="w-3 h-3" /> {entity.email}
+                          </span>
+                        )}
+                        {entity.chefId && (
+                          <span className="flex items-center gap-1">
+                            <Users className="w-3 h-3" /> {getChefName(entity.chefId)}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity ml-3">
+                      <Button variant="ghost" size="sm" onClick={() => handleOpenDialog(entity)} className="h-8 w-8 p-0 rounded-lg hover:bg-primary/10 hover:text-primary">
+                        <Edit2 className="w-3.5 h-3.5" />
+                      </Button>
+                      <Button variant="ghost" size="sm" onClick={() => handleDelete(entity.id)} className="h-8 w-8 p-0 rounded-lg hover:bg-red-500/10 hover:text-red-500">
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </Button>
+                    </div>
+                  </motion.div>
+                ))}
+                {entities.length === 0 && (
+                  <div className="flex flex-col items-center justify-center py-12 gap-2">
+                    <Building2 className="w-10 h-10 text-muted-foreground/30" />
+                    <p className="font-medium text-muted-foreground">Aucune entité trouvée</p>
+                    <p className="text-sm text-muted-foreground/60">Créez votre première entité</p>
+                  </div>
+                )}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+    </PageTransition>
   )
 }
